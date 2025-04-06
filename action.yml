@@ -1,26 +1,23 @@
-name: AI Code Reviewer
-
-on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-
-permissions:
-  contents: write
-  pull-requests: write
-
-jobs:
-  review:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: AI Code Reviewer
-        uses: CopilotHackathon2025POC/ai-code-reviewer@master
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_API_MODEL: "gpt-4"
-          exclude: "**/*.json, **/*.md"
+name: "AI Code Review Action"
+description: "Perform code reviews and comment on diffs using OpenAI API."
+inputs:
+  GITHUB_TOKEN:
+    description: "GitHub token to interact with the repository."
+    required: true
+  OPENAI_API_KEY:
+    description: "OpenAI API key for GPT."
+    required: true
+  OPENAI_API_MODEL:
+    description: "OpenAI API model."
+    required: false
+    default: "gpt-4"
+  exclude:
+    description: "Glob patterns to exclude files from the diff analysis"
+    required: false
+    default: ""
+runs:
+  using: "node16"
+  main: "dist/index.js"
+branding:
+  icon: "aperture"
+  color: "green"
